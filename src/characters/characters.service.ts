@@ -2,11 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CharacterDocument } from './schemas/characters.schema';
+import { User } from '../user/schemas/user.schema';
 
 @Injectable()
 export class CharactersService {
   constructor(
     @InjectModel('Character') private readonly characterModel: Model<CharacterDocument>,
+    @InjectModel('User') private readonly userModel: Model<User>,
   ) {}
 
   async create(userId: string, createCharacterDto: any) {
@@ -18,7 +20,16 @@ export class CharactersService {
   }
 
   async findAllByUser(userId: string) {
-    return await this.characterModel.find({ userId }).exec();
+    const user = await this.userModel.findById(userId).exec();
+  
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+    if (!user.characters || user.characters.length === 0) {
+      return [];
+    }
+  
+    return await this.characterModel.find({ _id: { $in: user.characters } }).exec();
   }
 
   async findAll() {

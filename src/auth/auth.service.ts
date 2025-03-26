@@ -25,10 +25,8 @@ export class AuthService {
 
     async login(user: any) {
         const payload = { sub: user._id };
-        console.log('Payload usado para gerar o token:', payload);
 
         const token = this.jwtService.sign(payload);
-        console.log('Token gerado:', token);
 
         return {
             access_token: token,

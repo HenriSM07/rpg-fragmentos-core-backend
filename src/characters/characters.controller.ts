@@ -102,12 +102,12 @@ class UpdateCharacterDto {
 
 @ApiTags('Characters')
 @Controller('characters')
+@UseGuards(AuthGuard('jwt'))
+@ApiBearerAuth('access-token')
 export class CharacterController {
   constructor(private readonly characterService: CharactersService) {}
 
   @Post(':userId')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Cria um novo personagem para um usuário' })
   @ApiResponse({ status: 201, description: 'Personagem criado com sucesso' })
   @ApiResponse({ status: 400, description: 'Erro ao criar personagem' })
@@ -120,9 +120,7 @@ export class CharacterController {
     return character;
   }
 
-  @Get(':userId')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('access-token')
+  @Get('user/:userId')
   @ApiOperation({ summary: 'Lista todos os personagens de um usuário' })
   @ApiResponse({ status: 200, description: 'Lista de personagens retornada com sucesso' })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
@@ -131,17 +129,13 @@ export class CharacterController {
   }
 
   @Get()
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Lista todos os personagens' })
   @ApiResponse({ status: 200, description: 'Lista de personagens retornada com sucesso' })
   async findAll() {
     return this.characterService.findAll();
   }
 
-  @Get(':id')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('access-token')
+  @Get('id/:id')
   @ApiOperation({ summary: 'Busca um personagem por ID' })
   @ApiResponse({ status: 200, description: 'Personagem encontrado' })
   @ApiResponse({ status: 404, description: 'Personagem não encontrado' })
@@ -153,9 +147,7 @@ export class CharacterController {
     return character;
   }
 
-  @Patch(':id')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('access-token')
+  @Patch('id/:id')
   @ApiOperation({ summary: 'Atualiza um personagem existente' })
   @ApiResponse({ status: 200, description: 'Personagem atualizado com sucesso' })
   @ApiResponse({ status: 404, description: 'Personagem não encontrado' })
@@ -168,9 +160,7 @@ export class CharacterController {
     return updatedCharacter;
   }
 
-  @Delete(':id')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('access-token')
+  @Delete('id/:id')
   @ApiOperation({ summary: 'Deleta um personagem' })
   @ApiResponse({ status: 200, description: 'Personagem deletado com sucesso' })
   @ApiResponse({ status: 404, description: 'Personagem não encontrado' })
