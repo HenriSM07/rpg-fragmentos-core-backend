@@ -28,8 +28,6 @@ class UpdateUserDto {
 
 @ApiTags('Users')
 @Controller('users')
-@UseGuards(AuthGuard('jwt'))
-@ApiBearerAuth('access-token')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -58,6 +56,8 @@ export class UserController {
   }
 
   @Post(':userId/characters/:characterId')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Associa um personagem a um usuário' })
   @ApiResponse({ status: 200, description: 'Personagem associado com sucesso' })
   @ApiResponse({ status: 404, description: 'Usuário ou personagem não encontrado' })
@@ -69,6 +69,8 @@ export class UserController {
   }
 
   @Get()
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Lista todos os usuários' })
   @ApiResponse({
     status: 200,
@@ -93,6 +95,8 @@ export class UserController {
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Busca um usuário por ID' })
   @ApiResponse({
     status: 200,
@@ -114,6 +118,8 @@ export class UserController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Atualiza um usuário existente' })
   @ApiResponse({
     status: 200,
@@ -142,6 +148,8 @@ export class UserController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Deleta um usuário' })
   @ApiResponse({ status: 200, description: 'Usuário deletado com sucesso' })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado' })

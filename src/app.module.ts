@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtController } from './jwt/jwt.controller';
 import { CharacterModule } from './characters/characters.module';
+import { LoggerService } from './logger.service';
 
 @Module({
   imports: [
@@ -27,6 +28,6 @@ import { CharacterModule } from './characters/characters.module';
     CharacterModule,
   ],
   controllers: [AppController, JwtController],
-  providers: [AppService],
+  providers: [AppService, LoggerService],
 })
 export class AppModule {}

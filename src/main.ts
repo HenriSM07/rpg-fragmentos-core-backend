@@ -1,12 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { LoggerService } from './logger.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { 
+    logger: new LoggerService() 
+  });
+
+  const logger = app.get(LoggerService);
 
   const config = new DocumentBuilder()
-    .setTitle('RPG')
+    .setTitle('RPG API')
     .setDescription('Documentação da API de RPG')
     .setVersion('1.0')
     .addBearerAuth(
@@ -29,7 +34,10 @@ async function bootstrap() {
     credentials: true,
   });
 
-  await app.listen(process.env.PORT || 3000);
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+
+  logger.logApplicationStart(port);
 }
 
 bootstrap();
